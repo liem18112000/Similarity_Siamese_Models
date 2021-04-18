@@ -1,7 +1,8 @@
-from models.factory import *
 import matplotlib.pyplot as plt
-from models.utility import *
+from models.utility import preprocess_data_into_groups
 from datetime import datetime
+import tensorflow as tf
+import numpy as np
 
 class AbstractModel(object):
 
@@ -34,7 +35,7 @@ class AbstractModel(object):
         else:
             print("Model training ....")
 
-    def evaluate(self, test_groups):
+    def evaluate(self, test_groups, steps_per_epoch=100, batch_size=1024):
         if self._model is None:
             raise Exception("Model is not initialized amd compiled")
         else:
@@ -104,9 +105,9 @@ class SimilarityModel(AbstractModel):
                 monitor='loss', patience=int(np.ceil(np.sqrt(epochs))), restore_best_weights=True)]
         )
     
-    def evaluate(self, test_groups):
+    def evaluate(self, test_groups, steps=100, batch_size=256):
         super(SimilarityModel, self).evaluate()
-        return self._model.evaluate(self._generator(test_groups), batch_size=256, steps=100)
+        return self._model.evaluate(self._generator(test_groups), batch_size=batch_size, steps=steps)
 
     def plotHistory(self):
         super(SimilarityModel, self).plotHistory()
@@ -150,7 +151,7 @@ class SiameseModel(AbstractModel):
             loss=_loss
         )
 
-    def train(self, train_groups, val_groups = None, epochs=20, steps_per_epoch=100, batch_size=1024, image_size = 32):
+    def train(self, train_groups, val_groups = None, epochs=20, steps_per_epoch=100, batch_size=512, image_size = 32):
         super(SiameseModel, self).train(train_groups, val_groups, epochs, steps_per_epoch)
         x_train, y_train = train_groups
 
@@ -163,12 +164,12 @@ class SiameseModel(AbstractModel):
                 monitor='loss', patience=4, restore_best_weights=True)]
         )
 
-    def evaluate(self, test_groups):
+    def evaluate(self, test_groups, steps=100, batch_size=256):
         super(SimilarityModel, self).evaluate()
         x_test, y_test = test_groups
         return self._model.evaluate(
             self._generator(x_test, y_test, image_size=32, emb_size=512),
-            steps=100,
+            steps=steps,
         )
 
     def plotHistory(self):

@@ -130,8 +130,7 @@ class SiameseModelFactory(object):
         combined_features = BatchNormalization()(combined_features)
         combined_features = Activation('relu')(combined_features)
         combined_features = Dense(1, activation='sigmoid')(combined_features)
-        model = Model(inputs=[img_a_in, img_b_in], outputs=[
-                      combined_features], name='Similarity_Model')
+        model = Model(inputs=[img_a_in, img_b_in], outputs=[combined_features], name='Similarity_Model')
 
         if show_summary:
             model.summary()
