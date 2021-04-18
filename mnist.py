@@ -4,7 +4,7 @@ import numpy as np
 from models.utility import preprocess_data_into_groups
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
+from datetime import date, datetime
 IMAGE_SIZE = 32
 
 def prepare_data():
@@ -57,6 +57,15 @@ def plot(history):
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
 
+import os
+def save(model, filename):
+    today = date.today()
+    path = "trained_model/" + str(today)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    filename = path + '/' + str(filename) + "_" + str(datetime.now())
+    print("Model saved at : " + filename)
+    model.save(filename)
 
 def main():
 
@@ -83,6 +92,8 @@ def main():
     )
 
     plot(history)
+
+    save(_model, 'similarity_mnist')
 
 
 if __name__ == "__main__":
