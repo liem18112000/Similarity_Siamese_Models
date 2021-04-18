@@ -15,10 +15,10 @@ def main():
     )
 
     model = SimilarityModel(simi_factory)
-    train_groups, test_group = model.preprocess(loader.load("fashion_mnist"))
+    train_groups, test_groups = model.preprocess(loader.load("fashion_mnist"))
     model.compile()
-    model.train(train_groups, test_group,  epochs=10,steps_per_epoch=10, batch_size=32)
-    model.evaluate(test_group, steps=1, batch_size=32)
+    model.train(train_groups, test_groups)
+    model.evaluate(test_groups)
     model.plotHistory()
 
 
