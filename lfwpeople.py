@@ -13,7 +13,12 @@ def prepare_data():
 
     loader = Loader()
 
-    train_images, train_labels, test_images, test_labels = loader.load("lfwp")
+    params = {
+        'test_rate': 0.2,
+        "random_state": 42
+    }
+
+    train_images, train_labels, test_images, test_labels = loader.load("lfwp", params)
 
     train_groups, test_groups = preprocess_data_into_groups(train=(
         train_images, train_labels), test=(test_images, test_labels), image_size=IMAGE_SIZE)
@@ -84,9 +89,9 @@ def main():
 
     # we want a constant validation group to have a frame of reference for model performance
     history = _model.fit(
-        _generator(train_groups),
+        _generator(train_groups, 512),
         steps_per_epoch=100,
-        validation_data=(_generator(test_groups, 1024)),
+        validation_data=(_generator(test_groups, 512)),
         validation_steps=10,
         epochs=20,
         callbacks=[tf.keras.callbacks.EarlyStopping(
