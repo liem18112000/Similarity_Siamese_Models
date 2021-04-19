@@ -1,7 +1,7 @@
 from models.factory import FeatureExtractModelFactory,  SiameseModelFactory
 from loader.loader import Loader
 import numpy as np
-from models.utility import preprocess_data_into_groups
+from models.utility import preprocess_data_into_groups, show_images_in_groups
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from datetime import date, datetime
@@ -73,6 +73,8 @@ def save(model, filename):
 def main():
 
     train_groups, test_groups = prepare_data()
+
+    show_images_in_groups(train_groups, nb_examples=5)
 
     _model, _generator, _loss= create_model()
 
