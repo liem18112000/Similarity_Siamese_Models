@@ -1,3 +1,4 @@
+import zipfile
 from loader.loader import Loader
 import numpy as np
 import pytest
@@ -22,4 +23,19 @@ def test_loader_LWFPeople():
     assert np.shape(y_train) == (1078, )
     assert np.shape(x_test) == (270, 32, 32, )
     assert np.shape(y_test) == (270, )
+
+
+def test_loader_Bollywood():
+    x_train, y_train, x_test, y_test = loader.load("bollywood")
+
+    assert np.shape(x_train) == (1078, 32, 32, )
+    assert np.shape(y_train) == (1078, )
+    assert np.shape(x_test) == (270, 32, 32, )
+    assert np.shape(y_test) == (270, )
+    # assert np.shape(x_train) == (1078, 32, 32, )
+    # assert np.shape(y_train) == (1078, )
+    # assert np.shape(x_test) == (270, 32, 32, )
+    # assert np.shape(y_test) == (270, )
+
+
 

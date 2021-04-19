@@ -1,6 +1,8 @@
 from utility.proxy.proxy import Proxy
+
 from dataset.fashion_mnist import FashionMNIST, FashionMNISTDataset
 from dataset.lfpeople import lfwPeople, lfwPeopleDataset
+from dataset.bollywood import Bollywood, BollywoodDataset
 
 class Loader(object):
 
@@ -13,6 +15,8 @@ class Loader(object):
         self._allDatasets['fashion_mnist']  = Proxy(FashionMNIST(FashionMNISTDataset()))
         print("Registering : lfwp")
         self._allDatasets['lfwp']           = Proxy(lfwPeople(lfwPeopleDataset(60)))
+        print("Registering : bollywood")
+        self._allDatasets['bollywood']      = Proxy(Bollywood(BollywoodDataset()))
 
     def showDatasets(self):
         print("Avaiable Datasets List")

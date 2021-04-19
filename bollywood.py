@@ -1,4 +1,3 @@
-import os
 from models.factory import FeatureExtractModelFactory,  SiameseModelFactory
 from loader.loader import Loader
 import numpy as np
@@ -6,29 +5,26 @@ from models.utility import preprocess_data_into_groups
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from datetime import date, datetime
-IMAGE_SIZE = 32
-
+IMAGE_SIZE = 256
+CHANNEL = 3
+BATCH_SIZE = 256
 
 def prepare_data():
 
     loader = Loader()
 
-    params = {
-        'test_rate': 0.2,
-        "random_state": 42
-    }
+    train_images, train_labels, test_images, test_labels = loader.load("bollywood")
 
-    train_images, train_labels, test_images, test_labels = loader.load("lfwp", params)
-
-    train_groups, test_groups = preprocess_data_into_groups(train=(
-        train_images, train_labels), test=(test_images, test_labels), image_size=IMAGE_SIZE)
+    train_groups, test_groups = preprocess_data_into_groups(
+        train=(train_images, train_labels), test=(test_images, test_labels), image_size=IMAGE_SIZE, channel=CHANNEL)
 
     return train_groups, test_groups
 
 
+
 def create_model():
 
-    extractor_factory = FeatureExtractModelFactory((IMAGE_SIZE, IMAGE_SIZE, 1))
+    extractor_factory = FeatureExtractModelFactory((IMAGE_SIZE, IMAGE_SIZE, CHANNEL))
 
     factory = SiameseModelFactory(
         extractor_factory
@@ -41,6 +37,7 @@ def create_model():
     _loss = factory.createLossFunction()
 
     return _model, _generator, _loss
+
 
 
 def plot(history):
@@ -63,7 +60,7 @@ def plot(history):
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
 
-
+import os
 def save(model, filename):
     today = date.today()
     path = "trained_model/" + str(today)
@@ -71,14 +68,13 @@ def save(model, filename):
         os.makedirs(path)
     filename = path + '/' + str(filename) + "_" + str(datetime.now())
     print("Model saved at : " + filename)
-    model.save(filename, save_format='h5')
-
+    model.save(filename)
 
 def main():
 
     train_groups, test_groups = prepare_data()
 
-    _model, _generator, _loss = create_model()
+    _model, _generator, _loss= create_model()
 
     # setup the optimization process
     _model.compile(
@@ -89,9 +85,9 @@ def main():
 
     # we want a constant validation group to have a frame of reference for model performance
     history = _model.fit(
-        _generator(train_groups, 512),
+        _generator(train_groups, BATCH_SIZE),
         steps_per_epoch=100,
-        validation_data=(_generator(test_groups, 512)),
+        validation_data=(_generator(test_groups, BATCH_SIZE)),
         validation_steps=10,
         epochs=20,
         callbacks=[tf.keras.callbacks.EarlyStopping(
@@ -100,7 +96,7 @@ def main():
 
     plot(history)
 
-    save(_model, 'similarity_lfwp')
+    save(_model, 'similarity_bollywood')
 
 
 if __name__ == "__main__":

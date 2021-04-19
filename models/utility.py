@@ -1,13 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def preprocess_data_into_groups(train, test, image_size):
+def preprocess_data_into_groups(train, test, image_size, channel=1):
     x_train, y_train = train
     x_test, y_test = test
-    x_train = x_train.reshape(-1, image_size, image_size,
-                              1).astype('float32') / 255.
-    x_test = x_test.reshape(-1, image_size, image_size,
-                            1).astype('float32') / 255.
+    x_train = x_train.reshape(-1, image_size, image_size, channel).astype('float32') / 255.
+    x_test = x_test.reshape(-1, image_size, image_size, channel).astype('float32') / 255.
     y_train = y_train.astype('int')
     y_test = y_test.astype('int')
     print('Training', x_train.shape, x_train.max())
