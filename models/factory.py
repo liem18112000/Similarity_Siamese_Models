@@ -123,10 +123,16 @@ class SiameseModelFactory(object):
 
         combined_features = concatenate(
             [img_a_feat(img_a_in), img_b_feat(img_b_in)], name='merge_features')
-        combined_features = Dense(16, activation='linear')(combined_features)
+        combined_features = Dense(512, activation='linear')(combined_features)
         combined_features = BatchNormalization()(combined_features)
         combined_features = Activation('relu')(combined_features)
-        combined_features = Dense(4, activation='linear')(combined_features)
+        combined_features = Dense(256, activation='linear')(combined_features)
+        combined_features = BatchNormalization()(combined_features)
+        combined_features = Activation('relu')(combined_features)
+        combined_features = Dense(128, activation='linear')(combined_features)
+        combined_features = BatchNormalization()(combined_features)
+        combined_features = Activation('relu')(combined_features)
+        combined_features = Dense(64, activation='linear')(combined_features)
         combined_features = BatchNormalization()(combined_features)
         combined_features = Activation('relu')(combined_features)
         combined_features = Dense(1, activation='sigmoid')(combined_features)

@@ -84,9 +84,9 @@ def main():
     # we want a constant validation group to have a frame of reference for model performance
     history = _model.fit(
         _generator(train_groups, 512),
-        steps_per_epoch=100,
+        steps_per_epoch=50,
         validation_data=(_generator(test_groups, 512)),
-        validation_steps=10,
+        validation_steps=5,
         epochs=100,
         callbacks=[tf.keras.callbacks.EarlyStopping(
             monitor='loss', patience=10, restore_best_weights=True)]
