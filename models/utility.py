@@ -10,6 +10,10 @@ def preprocess_data_into_groups(train, test, image_size, channel=1):
     y_test = y_test.astype('int')
     print('Training', x_train.shape, x_train.max())
     print('Testing', x_test.shape, x_test.max())
+    y_train = y_train.reshape((-1, ))
+    y_test = y_test.reshape((-1, ))
+    print('Testing', y_train.shape)
+    print('Testing', y_test.shape)
 
     # reorganize by groups
     train_groups = [x_train[np.where(y_train == i)[0]]
