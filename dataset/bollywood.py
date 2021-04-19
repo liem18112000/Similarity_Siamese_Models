@@ -62,9 +62,9 @@ class BollywoodDataset(Base):
         y_test.append(y.copy())
 
         x_train = np.reshape(x_train, (-1, 256, 256, 3))
-        y_train = np.reshape(y_train, (-1, 100))
+        y_train = np.reshape(y_train, (-1, np.shape(y)[-1]))
         x_test = np.reshape(x_test, (-1, 256, 256, 3))
-        y_test = np.reshape(y_test, (-1, 100))
+        y_test = np.reshape(y_test, (-1, np.shape(y)[-1]))
 
         return np.array(x_train), np.array(y_train), np.array(x_test), np.array(y_test)
 
