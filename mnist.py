@@ -77,7 +77,7 @@ def main():
     # we want a constant validation group to have a frame of reference for model performance
     history = _model.fit(
         _generator(train_groups),
-        steps_per_epoch=1000,
+        steps_per_epoch=100,
         validation_data=(_generator(test_groups, 1024)),
         validation_steps=10,
         epochs=100,
