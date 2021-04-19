@@ -5,7 +5,7 @@ from models.utility import preprocess_data_into_groups
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from datetime import date, datetime
-IMAGE_SIZE = 64
+IMAGE_SIZE = 32
 CHANNEL = 3
 BATCH_SIZE = 256
 
@@ -63,7 +63,7 @@ def plot(history):
 import os
 def save(model, filename):
     today = date.today()
-    path = "trained_model/" + str(today)
+    path = "trained_models"
     if not os.path.exists(path):
         os.makedirs(path)
     filename = path + '/' + str(filename) + "_" + str(datetime.now())
@@ -86,10 +86,10 @@ def main():
     # we want a constant validation group to have a frame of reference for model performance
     history = _model.fit(
         _generator(train_groups, BATCH_SIZE),
-        steps_per_epoch=100,
+        steps_per_epoch=10,
         validation_data=(_generator(test_groups, BATCH_SIZE)),
-        validation_steps=10,
-        epochs=20,
+        validation_steps=1,
+        epochs=10,
         callbacks=[tf.keras.callbacks.EarlyStopping(
             monitor='loss', patience=4, restore_best_weights=True)]
     )

@@ -58,7 +58,8 @@ class BollywoodDataset(Base):
             horizontal_flip=True
         )
         x_train, y_train, x_test, y_test = [], [], [], []
-        generator = datagen.flow_from_directory(train_path, batch_size=1024)
+        generator = datagen.flow_from_directory(
+            train_path, batch_size=1024, target_size=(32, 32), class_mode="sparse")
 
         x, y = generator.next()
         x_train.append(x.copy())
@@ -67,11 +68,6 @@ class BollywoodDataset(Base):
         x, y = generator.next()
         x_test.append(x.copy())
         y_test.append(y.copy())
-
-        x_train = np.reshape(x_train, (-1, 256, 256, 3))
-        y_train = np.reshape(y_train, (-1, np.shape(y)[-1]))
-        x_test = np.reshape(x_test, (-1, 256, 256, 3))
-        y_test = np.reshape(y_test, (-1, np.shape(y)[-1]))
 
         return np.array(x_train), np.array(y_train), np.array(x_test), np.array(y_test)
 
