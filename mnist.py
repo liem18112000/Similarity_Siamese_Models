@@ -80,9 +80,9 @@ def main():
         steps_per_epoch=100,
         validation_data=(_generator(test_groups, 1024)),
         validation_steps=10,
-        epochs=100,
+        epochs=20,
         callbacks=[tf.keras.callbacks.EarlyStopping(
-            monitor='loss', patience=10, restore_best_weights=True)]
+            monitor='loss', patience=4, restore_best_weights=True)]
     )
 
     plot(history)
