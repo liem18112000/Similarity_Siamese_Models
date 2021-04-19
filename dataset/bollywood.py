@@ -49,7 +49,14 @@ class BollywoodDataset(Base):
 
     def train_test_split(self):
         train_path = self.fetch_dataset()
-        datagen = ImageDataGenerator(rescale=1.0/255, validation_split=0.1)
+        datagen = ImageDataGenerator(
+            featurewise_center=True,
+            featurewise_std_normalization=True,
+            rotation_range=20,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            horizontal_flip=True
+        )
         x_train, y_train, x_test, y_test = [], [], [], []
         generator = datagen.flow_from_directory(train_path, batch_size=1024)
 

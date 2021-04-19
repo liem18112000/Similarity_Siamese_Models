@@ -5,7 +5,7 @@ from models.utility import preprocess_data_into_groups
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from datetime import date, datetime
-IMAGE_SIZE = 256
+IMAGE_SIZE = 64
 CHANNEL = 3
 BATCH_SIZE = 256
 
