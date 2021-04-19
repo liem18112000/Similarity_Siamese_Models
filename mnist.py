@@ -59,13 +59,7 @@ def plot(history):
 
 import os
 def save(model, filename):
-    today = date.today()
-    path = "trained_model/" + str(today)
-    if not os.path.exists(path):
-        os.makedirs(path)
-    filename = path + '/' + str(filename) + "_" + str(datetime.now())
-    print("Model saved at : " + filename)
-    model.save(filename)
+    model.save(filename, save_format='h5')
 
 def main():
 
